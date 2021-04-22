@@ -2,7 +2,7 @@
 """
 Created on Sat Apr  3 16:44:06 2021
 
-@author: marco
+@author: Marco Hennermann, K11911555
 """
 
 import os
@@ -11,39 +11,35 @@ import numpy as np
 import shutil as shutil
 from statistics import variance
 
-dirname = os.path.dirname(__file__)
-rel_inp_dirname = os.path.join(dirname, 'files')
-rel_out_dirname = os.path.join(dirname, 'new_files')
-list_of_incorrect_files = []
+dirname = os.path.dirname(__file__) #Absolute path of the file 
+rel_inp_dirname = os.path.join(dirname, 'files') #relative path of resources
+rel_out_dirname = os.path.join(dirname, 'new_files') #path where processed files get stored
+list_of_incorrect_files = [] 
 
 def ex2(inp_dir, out_dir, logfile):
     try:
-        fileNames = os.listdir(inp_dir)
+        fileNames = os.listdir(inp_dir) #get file names
         sorted(fileNames)
         ser_num = 1
         output_file_list = []
         err = 0
         if not out_dir:
-            os.mkdir(out_dir)
+            os.mkdir(out_dir) #if output-directory doesn't exist, make it
         if not logfile:
-            logfile = open("logfile.txt","w+")
-        #print(inp_dir)
+            logfile = open("logfile.txt","w+") #if logfile doesn't exist, make it
         for fileName in fileNames:
-            old_path = os.path.join(inp_dir, fileName)
-            #new_path = os.path.join(out_dir, fileName)
+            old_path = os.path.join(inp_dir, fileName) #safes old path
             if os.path.isdir(old_path):
-                ex2(old_path, out_dir, logfile)
-            #else:
-                #print("\t", fileName)
-            if not os.path.isfile(out_dir + "/" + str(ser_num).zfill(7)) and (old_path.endswith(".jpeg") or old_path.endswith(".jpg") or old_path.endswith(".JPG") or old_path.endswith(".JPEG")):
-                if os.path.getsize(old_path) > 10e3:
-                    try:
+                ex2(old_path, out_dir, logfile) #if path links to directory, reexecute the function for this folder
+            if not os.path.isfile(out_dir + "/" + str(ser_num).zfill(7)) and (old_path.endswith(".jpeg") or old_path.endswith(".jpg") or old_path.endswith(".JPG") or old_path.endswith(".JPEG")): #1. condition
+                if os.path.getsize(old_path) > 10e3: #2. condition
+                    try: #3. condition
                         im = PIL.Image.open(old_path)
                         width, height, color = np.shape(np.array(im))
                         
-                        if width >= 100 and height >= 100 and color > 0:
-                            if variance(im) > 0:
-                                if not find_duplicate_images(im, output_file_list):
+                        if width >= 100 and height >= 100 and color > 0: #4. condition
+                            if variance(im) > 0: #5. condition
+                                if not find_duplicate_images(im, output_file_list): #6. condition
                                     output_file_list.append(out_dir + "/" + str(ser_num).zfill(7) + ".jpg")
                                     print(out_dir + "/" + str(ser_num).zfill(7) + ".jpg")
                                     shutil.copy(old_path, out_dir + "/" + str(ser_num).zfill(7) + ".jpg")
@@ -73,7 +69,7 @@ def ex2(inp_dir, out_dir, logfile):
                 list_of_incorrect_files.append(old_path + ";" + str(err) + "\n")
                 continue
         for i in range(len(list_of_incorrect_files)):
-            logfile.write(list_of_incorrect_files[i])
+            logfile.write(list_of_incorrect_files[i]) #writes errors to logfile
     except Exception as e:
         print(e)
     return ser_num-1
