@@ -7,11 +7,8 @@ Matr.nr.: K11911555
 Exercise: 4
 """
 import os
-import PIL.Image
 import numpy as np
-import shutil as shutil
 import logging
-from statistics import variance
 
 dirname = os.path.dirname(__file__) #Absolute path of the file 
 rel_inp_dirname = os.path.join(dirname, 'files') #relative path of resources
