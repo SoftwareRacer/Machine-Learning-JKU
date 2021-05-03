@@ -51,11 +51,13 @@ def ex4(image_array, border_x, border_y): # function to make part of image black
                 input_array[j][i] = 0 # sets each pixel on right columns from border to 0
                 target_array += image_array[i][j]
        
-        known_array = input_array # creates new array which only contents 0 or 1 in each pixel to say if the pixel is known or not
+        known_array = input_array # creates new boolean array which only contents false or true in each pixel to say if the pixel is known or not
         for i in range(len(known_array[:,1])):
             for i in range(len(known_array[1,:])):
                 if(known_array[i][j] != 0):
-                    known_array[i][j] = 1 # sets every not unknown pixel to 1
+                    known_array[i][j] = true # sets every not unknown pixel to true
+                else:
+                 known_array[i][j] = false
     except NotImplementedError as nie:
         print("image_array is not a 2D-numpy-array")
         logging.error(nie)
