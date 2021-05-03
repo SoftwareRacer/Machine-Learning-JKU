@@ -31,12 +31,12 @@ class ImageNormalizer:
  
     def analyze_images():
         for fileName in ImageNormalizer.file_paths:
-            ImageNormalizer.mean.append(np.mean(fileName))
-            ImageNormalizer.std.append(np.std(fileName))
-        ImageNormalizer.mean = ImageNormalizer.mean.astype(np.float64)
+            ImageNormalizer.mean.append(np.mean(fileName)) #adds mean value of file to array of means
+            ImageNormalizer.std.append(np.std(fileName)) #adds std deviation of file to array of std deviations
+        ImageNormalizer.mean = ImageNormalizer.mean.astype(np.float64) #defines type to np.float64
         ImageNormalizer.std = ImageNormalizer.std.astype(np.float64)
         
-        return (ImageNormalizer.mean, ImageNormalizer.std)
+        return (ImageNormalizer.mean, ImageNormalizer.std) #returns tuple of mean and standard deviation
         
     def get_images_data():
         counter = 0
@@ -44,10 +44,10 @@ class ImageNormalizer:
             for fileName in ImageNormalizer.file_paths:
                 image = PIL.Image.open(fileName)
                 pixels = np.asarray(image)
-                pixels = pixels.astype(np.float32)
+                pixels = pixels.astype(np.float32) #defines each pixel as np.float32
                 pixels -= ImageNormalizer.mean
-                pixels /= ImageNormalizer.std
-                yield pixels
+                pixels /= ImageNormalizer.std 
+                yield pixels # returns operated pixels
                 counter += 1
         except ValueError:
             print("Error! mean or std is None")
